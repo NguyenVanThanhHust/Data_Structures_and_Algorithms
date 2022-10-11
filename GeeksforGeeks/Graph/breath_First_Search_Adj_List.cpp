@@ -55,6 +55,7 @@ void Graph::breathFirstSearch(int s)
 			if (!visited[element])
 			{
 				q.push(element);
+				visited[element] = true;
 			}
 		}
 	}
