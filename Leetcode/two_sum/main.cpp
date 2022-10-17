@@ -1,12 +1,12 @@
 /*
 https://leetcode.com/problems/two-sum/
-binary search appoarch
 */
 #include <iostream>
 #include <algorithm>
 #include <vector> 
 #include <array>
-
+#include <fstream>
+#include <sstream>
 
 using namespace std;
 
@@ -77,23 +77,33 @@ public:
 
 int main()
 {
-    // vector<int> vec{1, 2, 3, 4, 5, 6, 7};
-    int arr[] = { 5, 75, 25};
-    int target = 100;
-    int n = sizeof(arr) / sizeof(arr[0]);
+    freopen("test_case.txt", "r", stdin);
+    freopen("binary_search.txt", "w", stdout);
+    int test_case;
+    cin>>test_case;
+    cout<<test_case;
+    cout<<endl;
+    for (size_t test_case_index = 0; test_case_index < test_case; test_case_index++)
+    {
+        int num_sample;
+        int target;
+        cin>>num_sample;
+        cin>>target;
 
-    vector<int> vec;
-    for(int i=0; i<n; i++)
-    {
-        vec.push_back(arr[i]);
+        int value;
+        vector<int> vec;
+        for (size_t i = 0; i < num_sample; i++)
+        {
+            cin>>value;
+            vec.push_back(value);
+        }
         
-    }
-    
-    Solution sol = Solution();
-    vector<int> res = sol.twoSum(vec, target);
-    for(vector<int>::iterator it = res.begin(); it!= res.end(); ++it)
-    {
-        cout<<*it<<" ";
+        Solution sol = Solution();
+        vector<int> res = sol.twoSum(vec, target);
+        for(vector<int>::iterator it = res.begin(); it!= res.end(); ++it)
+        {
+            cout<<*it<<" ";
+        }   
     }
     return 0;
 }
