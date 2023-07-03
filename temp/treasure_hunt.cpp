@@ -7,6 +7,8 @@ using namespace std;
 
 int main()
 {
+    ios_base::sync_with_stdio(0);
+
     int test_case;
     cin>>test_case;
     for(int t=1; t<=test_case;t++)
@@ -40,7 +42,7 @@ int main()
             total_prize += max_prize;
             prize_to_get.pop();
         }
-        cout<<"# "<<test_case<<" "<<total_prize<<endl;
+        cout<<"# "<<t<<" "<<total_prize<<endl;
     }
     return 0;
 }
