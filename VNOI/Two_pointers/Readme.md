@@ -1,0 +1,1 @@
+https://vnoi.info/wiki/algo/basic/two-pointers.md
