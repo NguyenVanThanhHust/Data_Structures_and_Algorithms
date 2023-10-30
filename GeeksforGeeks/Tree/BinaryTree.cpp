@@ -1,89 +1,183 @@
-/**
-* From Leetcode 
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-#include <iostream>
-#include <queue>
-#include <climits>
-#include <array>
-#include <vector>
-
-using namespace std;
-
-struct TreeNode {
-	int val;
-	TreeNode *left;
-	TreeNode *right;
-	TreeNode *parent;
-	TreeNode() : val(0), left(nullptr), right(nullptr), parent(nullptr) {}
-	TreeNode(int x) : val(x), left(nullptr), right(nullptr), parent(nullptr) {}
-	TreeNode(int x, TreeNode* left, TreeNode* right) : val(x), left(left), right(right), parent(nullptr) {}
-};
-
-void printLevelOrder(TreeNode* root);
-void printPreOrderTraversal(TreeNode* root);
-void printInOrderTraversal(TreeNode* root);
-void printPostOrderTraversal(TreeNode* root);
-
-void insertByLevel(TreeNode* root, int val);
-bool isBalanced(TreeNode* root);
-int getDiameter(TreeNode* root);
-bool isSymmetric(TreeNode* root);
-
-bool isIdentical(TreeNode *root1, TreeNode *root2);
-TreeNode* mirrorTree(TreeNode *root);
+#pragma once
+#ifndef BINARY_TREE_H
+#define BINARY_TREE_H
+#include "BinaryTree.h"
 
 TreeNode* createNewEmptyNode()
 {
-	TreeNode *node = new TreeNode();
+	TreeNode* node = new TreeNode();
 	return node;
 };
 
 TreeNode* createNewTree(vector<int> values)
 {
-	TreeNode *root = new TreeNode();
+	int numInput = values.size();
+	TreeNode* root = new TreeNode(values[0]);
 	queue<TreeNode*> treeNodes;
 	treeNodes.push(root);
-	for (auto value: values)
+	int currentIndex = 1;
+	while (!treeNodes.empty())
 	{
-		TreeNode* currentNode = treeNodes.front();
-		if (value != 0)
-		{
-			currentNode->val = value;
-			TreeNode* left = new TreeNode();
-			TreeNode* right = new TreeNode();
-			currentNode->left = left;
-			currentNode->right = right;
-			treeNodes.push(left);
-			treeNodes.push(right);
-		}
+		TreeNode* topNode = treeNodes.front();
 		treeNodes.pop();
+		if (values[currentIndex] != 0)
+		{
+			TreeNode* newLeftNode = new TreeNode(values[currentIndex]);
+			topNode->left = newLeftNode;
+			treeNodes.push(newLeftNode);
+		}
+		currentIndex++;
+		if (currentIndex == numInput)
+		{
+			break;
+		}
+		if (values[currentIndex] != 0)
+		{
+			TreeNode* newRightNode = new TreeNode(values[currentIndex]);
+			topNode->right = newRightNode;
+			treeNodes.push(newRightNode);
+		}
+		currentIndex++;
+		if (currentIndex == numInput)
+		{
+			break;
+		}
 	}
 	return root;
 };
 
-int main()
+void levelOrderTraversal(TreeNode* root, vector<int> &output)
 {
-	TreeNode* root = createNewEmptyNode();
-	root->val = 1;
-	root->left = createNewEmptyNode();
-	root->left->val = 2;
-	root->right = createNewEmptyNode();
-	root->right->val = 3;
-	
-	int valToInsert = 4;
-	cout << "\n  Insert new val by level: " << valToInsert;
-	insertByLevel(root, valToInsert);
+	queue<TreeNode*> queueNode;
+	queueNode.push(root);
+	while (!queueNode.empty())
+	{
+		TreeNode* topNode = queueNode.front();
+		output.push_back(topNode->val);
+		if (topNode->left != nullptr)
+		{
+			queueNode.push(topNode->left);
+		}
+		if (topNode->right != nullptr)
+		{
+			queueNode.push(topNode->right);
+		}
+		queueNode.pop();
+	}
+};
 
-	return 0;
+void preOrderTraversal(TreeNode* root, vector<int>& outputs)
+{
+	if (root == nullptr)
+	{
+		return;
+	}
+	outputs.push_back(root->val);
+	preOrderTraversal(root->left, outputs);
+	preOrderTraversal(root->right, outputs);
+};
+
+void inOrderTraversal(TreeNode* root, vector<int>& outputs)
+{
+	if (root == nullptr)
+	{
+		return;
+	}
+	inOrderTraversal(root->left, outputs);
+	outputs.push_back(root->val);
+	inOrderTraversal(root->right, outputs);
+};
+
+void postOrderTraversal(TreeNode* root, vector<int>& outputs)
+{
+	if (root == nullptr)
+	{
+		return;
+	}
+	postOrderTraversal(root->left, outputs);
+	postOrderTraversal(root->right, outputs);
+	outputs.push_back(root->val);
+};
+
+void zigZagTraversal(TreeNode* root, vector<int>& outputs)
+{
+	stack<TreeNode*> oddLevel;
+	stack<TreeNode*> evenLevel;
+	oddLevel.push(root);
+	while (!oddLevel.empty() || !evenLevel.empty())
+	{
+		while (!oddLevel.empty())
+		{
+			TreeNode* topNode = oddLevel.top();
+			if (topNode->val == 0)
+			{
+				continue;
+			}
+			if (topNode->right==nullptr)
+			{
+				TreeNode* newEmptyNode = createNewEmptyNode();
+				evenLevel.push(newEmptyNode);
+			}
+			else
+			{
+				evenLevel.push(topNode->right);
+			}
+			if (topNode->left==nullptr)
+			{
+				TreeNode* newEmptyNode = createNewEmptyNode();
+				evenLevel.push(newEmptyNode);
+			}
+			else
+			{
+				evenLevel.push(topNode->left);
+			}
+			oddLevel.pop();
+		}
+		while (!evenLevel.empty())
+		{
+			TreeNode* topNode = evenLevel.top();
+			if (topNode->val==0)
+			{
+				continue;
+			}
+			if (topNode->left == nullptr)
+			{
+				TreeNode* newEmptyNode = createNewEmptyNode();
+				evenLevel.push(newEmptyNode);
+			}
+			else
+			{
+				evenLevel.push(topNode->left);
+			}
+			if (topNode->right == nullptr)
+			{
+				TreeNode* newEmptyNode = createNewEmptyNode();
+				evenLevel.push(newEmptyNode);
+			}
+			else
+			{
+				evenLevel.push(topNode->right);
+			}
+			evenLevel.pop();
+		}
+	}
+}
+
+void inOrderTraversalwithoutRecursion(TreeNode* root, vector<int> &outputs)
+{
+	stack<TreeNode*> nodes;
+	nodes.push(root);
+	while (!nodes.empty())
+	{
+		TreeNode* topNode = nodes.top();
+		while (topNode->left != nullptr)
+		{
+			topNode = topNode->left;
+			nodes.push(topNode);
+		}
+	}
+
+	
 }
 
 
@@ -117,16 +211,11 @@ void insertByLevel(TreeNode* root, int val)
 	}
 };
 
-bool isBalanced(TreeNode* root)
-{
-	return true;
-};
-
-bool isIdentical(TreeNode *root1, TreeNode *root2)
+bool isIdentical(TreeNode* root1, TreeNode* root2)
 {
 	queue<TreeNode*> firstTree;
 	queue<TreeNode*> secondTree;
-	if (root1->val !=  root2->val)
+	if (root1->val != root2->val)
 	{
 		return false;
 	}
@@ -138,6 +227,31 @@ bool isIdentical(TreeNode *root1, TreeNode *root2)
 	}
 	return true;
 };
+
+
+TreeNode* mirrorTree(TreeNode* root) {
+	// Main idea: depth first search traversal
+	// push current node
+	TreeNode* newRoot = createNewEmptyNode();
+	queue<TreeNode*> treeNodes;
+	treeNodes.push(root);
+	queue<int> orders;
+
+	while (!treeNodes.empty())
+	{
+		TreeNode* node = treeNodes.front();
+		
+		treeNodes.pop();
+	}
+	return newRoot;
+};
+
+
+bool isBalanced(TreeNode* root)
+{
+	return true;
+};
+
 int getDiameter(TreeNode* root)
 {
 	return 1;
@@ -147,90 +261,11 @@ bool isSymmetric(TreeNode* root)
 	return true;
 };
 
-void printLevelOrder(TreeNode* root)
+TreeNode* getLowestCommonAncestor(TreeNode* root, int val1, int val2)
 {
-	queue<TreeNode*> queueNode;
-	queueNode.push(root);
-	while (!queueNode.empty())
-	{
-		TreeNode* topNode = queueNode.front();
-		queueNode.pop();
-		cout << topNode->val << "  ";
-		if (topNode->left != nullptr)
-		{
-			queueNode.push(topNode->left);
-		}
-		if (topNode->right != nullptr)
-		{
-			queueNode.push(topNode->right);
-		}
-	}
-};
+	TreeNode* node = createNewEmptyNode();
+	return node;
+}
 
-void printPreOrderTraversal(TreeNode* root)
-{
-	if (root == nullptr)
-	{
-		return;
-	}
-	cout << root->val << " ";
-	printPreOrderTraversal(root->left);
-	printPreOrderTraversal(root->right);
-};
+#endif // !BINARY_TREE_H
 
-void printInOrderTraversal(TreeNode* root)
-{
-	if (root == nullptr)
-	{
-		return;
-	}
-	printInOrderTraversal(root->left);
-	cout << root->val << " ";
-	printInOrderTraversal(root->right);
-};
-
-void printPostOrderTraversal(TreeNode* root)
-{
-	if (root == nullptr)
-	{
-		return;
-	}
-	printPostOrderTraversal(root->left);
-	printPostOrderTraversal(root->right);
-	cout << root->val << " ";
-};
-
-void insertByLevel(TreeNode* root, int val)
-{
-	queue<TreeNode*> treeNodes;
-	treeNodes.push(root);
-	while (!treeNodes.empty())
-	{
-		TreeNode* currentNode = treeNodes.front();
-		treeNodes.pop();
-		if (currentNode->left == nullptr)
-		{
-			TreeNode* newNode = new TreeNode();
-			newNode->val = val;
-			currentNode->left = newNode;
-			break;
-		}
-		else if (currentNode->right == nullptr)
-		{
-			TreeNode* newNode = new TreeNode();
-			newNode->val = val;
-			currentNode->right = newNode;
-			break;
-		}
-		else
-		{
-			treeNodes.push(currentNode->left);
-			treeNodes.push(currentNode->right);
-		}
-	}
-};
-
-TreeNode* mirrorTree(TreeNode *root) {
-	TreeNode* newRoot = createNewEmptyNode();
-	return newRoot;
-};
