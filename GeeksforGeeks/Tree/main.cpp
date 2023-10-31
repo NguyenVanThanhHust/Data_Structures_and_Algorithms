@@ -36,7 +36,14 @@ int main()
 		vector<int> output;
 		// Main algorithm that need to be tested here
 		TreeNode* root = createNewTree(inputData);
-		levelOrderTraversal(root, output);
+		if (testCase == "levelOrderTraversal")
+		{
+			levelOrderTraversal(root, output);
+		}
+		else if (testCase == "inOrderTraversal")
+		{
+
+		}
 
 		int expectOutputSize;
 		cin >> expectOutputSize;
