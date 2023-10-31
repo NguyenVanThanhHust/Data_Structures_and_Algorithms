@@ -42,7 +42,11 @@ int main()
 		}
 		else if (testCase == "inOrderTraversal")
 		{
-
+			inOrderTraversal(root, output);
+		}
+		else if (testCase == "preOrderTraversal")
+		{
+			preOrderTraversal(root, output);
 		}
 
 		int expectOutputSize;
