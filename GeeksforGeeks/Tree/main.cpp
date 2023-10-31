@@ -48,7 +48,10 @@ int main()
 		{
 			preOrderTraversal(root, output);
 		}
-
+		else if (testCase == "postOrderTraversal")
+		{
+			postOrderTraversal(root, output);
+		}
 		int expectOutputSize;
 		cin >> expectOutputSize;
 		cout << "Start to compare result for case: " << t + 1 << endl;
