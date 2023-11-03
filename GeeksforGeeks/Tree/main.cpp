@@ -52,6 +52,24 @@ int main()
 		{
 			postOrderTraversal(root, output);
 		}
+		else if (testCase == "insertLevelOrder")
+		{
+			int inputVal;
+			cin >> inputVal;
+			insertByLevel(root, inputVal);
+			levelOrderTraversal(root, output);
+		}
+		else if (testCase == "mirrorTree")
+		{
+			TreeNode* newRoot = mirrorTree(root);
+			levelOrderTraversal(newRoot, output);
+		}
+		else
+		{
+			cout << "Unrecogize test case" << endl;
+			return 1;
+		}
+
 		int expectOutputSize;
 		cin >> expectOutputSize;
 		cout << "Start to compare result for case: " << t + 1 << endl;
@@ -67,7 +85,8 @@ int main()
 			if (expectOutput[i] != output[i]) 
 			{
 				cout << "Expect: " << expectOutput[i] << " get: " << output[i] << endl;
-				break;
+				cout << "This case is failed" << endl;
+				return 1;
 			}
 		}
 		cout << "This case is passed" << endl;

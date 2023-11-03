@@ -102,7 +102,7 @@ void postOrderTraversal(TreeNode* root, vector<int>& outputs)
 void zigZagTraversal(TreeNode* root, vector<int>& outputs)
 {
 	stack<TreeNode*> oddLevel;
-	stack<TreeNode*> evenLevel;
+	queue<TreeNode*> evenLevel;
 	oddLevel.push(root);
 	while (!oddLevel.empty() || !evenLevel.empty())
 	{
@@ -135,7 +135,7 @@ void zigZagTraversal(TreeNode* root, vector<int>& outputs)
 		}
 		while (!evenLevel.empty())
 		{
-			TreeNode* topNode = evenLevel.top();
+			TreeNode* topNode = evenLevel.front();
 			if (topNode->val==0)
 			{
 				continue;
@@ -176,10 +176,7 @@ void inOrderTraversalwithoutRecursion(TreeNode* root, vector<int> &outputs)
 			nodes.push(topNode);
 		}
 	}
-
-	
 }
-
 
 void insertByLevel(TreeNode* root, int val)
 {
@@ -230,20 +227,22 @@ bool isIdentical(TreeNode* root1, TreeNode* root2)
 
 
 TreeNode* mirrorTree(TreeNode* root) {
-	// Main idea: depth first search traversal
-	// push current node
-	TreeNode* newRoot = createNewEmptyNode();
-	queue<TreeNode*> treeNodes;
-	treeNodes.push(root);
-	queue<int> orders;
-
-	while (!treeNodes.empty())
-	{
-		TreeNode* node = treeNodes.front();
-		
-		treeNodes.pop();
+	if (root->left == nullptr && root->right==nullptr) {
+		return root;
 	}
-	return newRoot;
+	TreeNode* tempNode = createNewEmptyNode();
+	if (root->right!=nullptr)
+	{
+		tempNode->left = mirrorTree(root->right);
+	}
+	if (root->left != nullptr)
+	{
+		tempNode->right = mirrorTree(root->left);
+	}
+	root->right = tempNode->right;
+	root->left = tempNode->left;
+	delete tempNode;
+	return root;
 };
 
 
