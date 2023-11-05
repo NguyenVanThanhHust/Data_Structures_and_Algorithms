@@ -255,9 +255,91 @@ int getDiameter(TreeNode* root)
 {
 	return 1;
 };
-bool isSymmetric(TreeNode* root)
+
+int checkVectorSymmetric(vector<int> &values, vector<int> orders)
 {
-	return true;
+	int numElements = values.size();
+	int numPairs = numElements / 2;
+	for (int i = 0; i < numPairs; i++)
+	{
+		if (values[i] != values[numElements-1 - i] || (orders[i]+orders[numElements - 1 - i]) != 0)
+		{
+			return 0;
+		}
+	}
+	return 1;
+}
+
+int isSymmetric(TreeNode* root)
+{
+	if (root->left == nullptr && root->right == nullptr)
+	{
+		return 1;
+	}
+	if (root->left == nullptr && root->right != nullptr || root->left != nullptr && root->right == nullptr)
+	{
+		return 0;
+	}
+
+	queue<TreeNode*> evenLevel;
+	queue<TreeNode*> oddLevel;
+	oddLevel.push(root);
+	while (!evenLevel.empty() || !oddLevel.empty())
+	{
+		// left is -2, right 2
+		vector<int> orders;
+		vector<int> values;
+		TreeNode* topNode;
+		
+		while (!oddLevel.empty())
+		{
+			topNode = oddLevel.front();
+			if (topNode->left != nullptr)
+			{
+				evenLevel.push(topNode->left);
+				orders.push_back(-2);
+				values.push_back(topNode->left->val);
+			}
+			if (topNode->right != nullptr)
+			{
+				evenLevel.push(topNode->right);
+				orders.push_back(2);
+				values.push_back(topNode->right->val);
+			}
+			oddLevel.pop();
+		}
+		if (checkVectorSymmetric(values, orders) == 0)
+		{
+			return 0;
+		}
+		values.clear();
+		orders.clear();
+
+		while (!evenLevel.empty())
+		{
+			topNode = evenLevel.front();
+			if (topNode->left != nullptr)
+			{
+				oddLevel.push(topNode->left);
+				orders.push_back(-2);
+				values.push_back(topNode->left->val);
+			}
+			if (topNode->right != nullptr)
+			{
+				oddLevel.push(topNode->right);
+				orders.push_back(2);
+				values.push_back(topNode->right->val);
+			}
+			evenLevel.pop();
+		}
+		if (checkVectorSymmetric(values, orders) == 0)
+		{
+			return 0;
+		}
+		values.clear();
+		orders.clear();
+	}
+	return 1;
 };
 
 TreeNode* getLowestCommonAncestor(TreeNode* root, int val1, int val2)

@@ -64,6 +64,11 @@ int main()
 			TreeNode* newRoot = mirrorTree(root);
 			levelOrderTraversal(newRoot, output);
 		}
+		else if (testCase == "isSymmetric")
+		{
+			int isThisTreeSymmetric = isSymmetric(root);
+			output.push_back(isThisTreeSymmetric);
+		}
 		else
 		{
 			cout << "Unrecogize test case" << endl;

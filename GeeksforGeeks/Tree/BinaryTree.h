@@ -42,7 +42,7 @@ void inOrderTraversalwithoutRecursion(TreeNode* root, vector<int>& outputs);
 void insertByLevel(TreeNode* root, int val);
 bool isBalanced(TreeNode* root);
 int getDiameter(TreeNode* root);
-bool isSymmetric(TreeNode* root);
+int isSymmetric(TreeNode* root);
 
 bool isIdentical(TreeNode* root1, TreeNode* root2);
 TreeNode* mirrorTree(TreeNode* root);
