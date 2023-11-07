@@ -16,6 +16,10 @@ TreeNode* createNewTree(vector<int> values)
 	queue<TreeNode*> treeNodes;
 	treeNodes.push(root);
 	int currentIndex = 1;
+	if (currentIndex == numInput)
+	{
+		return root;
+	}
 	while (!treeNodes.empty())
 	{
 		TreeNode* topNode = treeNodes.front();
@@ -251,11 +255,6 @@ bool isBalanced(TreeNode* root)
 	return true;
 };
 
-int getDiameter(TreeNode* root)
-{
-	return 1;
-};
-
 int checkVectorSymmetric(vector<int> &values, vector<int> orders)
 {
 	int numElements = values.size();
@@ -340,6 +339,40 @@ int isSymmetric(TreeNode* root)
 		orders.clear();
 	}
 	return 1;
+};
+
+int getHeight(TreeNode* root)
+{
+	if (root->left == nullptr && root->right == nullptr)
+	{
+		return 1;
+	}
+	if (root->left == nullptr)
+	{
+		return getHeight(root->right) + 1;
+	}
+	if (root->right == nullptr)
+	{
+		return getHeight(root->left) + 1;
+	}
+	return max(getHeight(root->left), getHeight(root->right)) + 1;
+}
+
+int getDiameter(TreeNode* root)
+{
+	if (root->left == nullptr && root->right == nullptr)
+	{
+		return 1;
+	}
+	if (root->left == nullptr)
+	{
+		return getHeight(root->right) + 1;
+	}
+	if (root->right == nullptr)
+	{
+		return getHeight(root->left) + 1;
+	}
+	return getHeight(root->left) + getHeight(root->right) + 1;
 };
 
 TreeNode* getLowestCommonAncestor(TreeNode* root, int val1, int val2)

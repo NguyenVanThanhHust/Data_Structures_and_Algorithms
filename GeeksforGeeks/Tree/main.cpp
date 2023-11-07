@@ -69,6 +69,16 @@ int main()
 			int isThisTreeSymmetric = isSymmetric(root);
 			output.push_back(isThisTreeSymmetric);
 		}
+		else if (testCase == "getHeight")
+		{
+			int height = getHeight(root);
+			output.push_back(height);
+		}
+		else if (testCase == "getDiameter")
+		{
+			int diameter = getDiameter(root);
+			output.push_back(diameter);
+		}
 		else
 		{
 			cout << "Unrecogize test case" << endl;
