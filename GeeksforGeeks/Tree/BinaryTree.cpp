@@ -170,14 +170,30 @@ void zigZagTraversal(TreeNode* root, vector<int>& outputs)
 void inOrderTraversalwithoutRecursion(TreeNode* root, vector<int> &outputs)
 {
 	stack<TreeNode*> nodes;
-	nodes.push(root);
 	while (!nodes.empty())
 	{
 		TreeNode* topNode = nodes.top();
-		while (topNode->left != nullptr)
+		if (topNode->left==nullptr && topNode->right==nullptr)
 		{
-			topNode = topNode->left;
+			outputs.push_back(topNode->val);
+			nodes.pop();
+		}
+		else if (topNode->left==nullptr && topNode->right!=nullptr)
+		{
+			outputs.push_back(topNode->val);
+			nodes.pop();
+			nodes.push(topNode->right);
+		}
+		else if (topNode->left != nullptr && topNode->right == nullptr)
+		{
+			nodes.push(topNode->left);
+		}
+		else
+		{
+			nodes.pop();
+			nodes.push(topNode->left);
 			nodes.push(topNode);
+			nodes.push(topNode->right);
 		}
 	}
 }

@@ -79,6 +79,10 @@ int main()
 			int diameter = getDiameter(root);
 			output.push_back(diameter);
 		}
+		else if (testCase == "inOrderTraversalwithoutRecursion")
+		{
+			inOrderTraversalwithoutRecursion(root, output);
+		}
 		else
 		{
 			cout << "Unrecogize test case" << endl;
