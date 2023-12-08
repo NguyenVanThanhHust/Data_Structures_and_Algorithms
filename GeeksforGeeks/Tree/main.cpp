@@ -83,6 +83,18 @@ int main()
 		{
 			inOrderTraversalwithoutRecursion(root, output);
 		}
+		else if (testCase == "getPostOrderFromInOrderAndPreOrder")
+		{
+			// In this case, vector<int> inputData is inOrder Traversal
+			// So we need to input preOrder Traversal too
+			vector<int> preOrder;
+			for (int i = 0; i < inputSize; i++)
+			{
+				cin >> num;
+				preOrder.push_back(num);
+			}
+			output = getPostOrderFromInOrderAndPreOrder(inputData, preOrder);
+		}
 		else
 		{
 			cout << "Unrecogize test case" << endl;
