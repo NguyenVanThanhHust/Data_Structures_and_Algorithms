@@ -12,53 +12,36 @@ int main()
     {   
         int size1, size2;
         cin >> size1 >> size2;
-        vector<int> a, b;
+        int a[size1+1], b[size2+1];
         int value;
         for (int i = 0; i < size1; i++)
         {                               
             cin >> value;
-            a.push_back(value);
+            a[i] = value;
         }
         for (int i = 0; i < size2; i++)
         {
             cin >> value;
-            b.push_back(value);
+            b[i] = value;
         }
-            vector<int> c;
-        vector<int>::iterator p1 = a.begin();
-        vector<int>::iterator p2 = b.begin();
-        while (p1 != a.end() && p2 != b.end())
+        // Below is to avoid checking boundary condition
+        a[size1] = 1e9+1;
+        b[size2] = 1e9+1;
+        int c[size1+size2];
+        int i=0, j=0, k=0;
+        while (i<size1 || j<size2)
         {
-            if(p1 == a.end() && p2 == b.end())
+            if (a[i] < b[j])
             {
-                break;
-            }
-            int v1 = *p1;
-            int v2 = *p2;
-            if (p1 == a.end())
-            {
-                while (p2 != b.end()) {
-                    c.push_back(v2);
-                    p2++;
-                }
-            }
-            if (p2 == b.end())
-            {
-                while (p1 != a.end()) {
-                    c.push_back(v1);
-                    p1++;
-                }
-            }
-            if (v1 < v2)
-            {
-                c.push_back(v1);
-                p1++;
+                c[k] = a[i];
+                i++;
             }
             else
             {
-                c.push_back(v2);
-                p2++;
+                c[k] = b[j];
+                j++;
             }
+            k++;
         }
         cout << "C"<<endl;
         for (auto element: c)
