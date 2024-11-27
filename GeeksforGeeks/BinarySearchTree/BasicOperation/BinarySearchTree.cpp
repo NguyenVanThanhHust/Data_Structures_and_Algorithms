@@ -65,5 +65,9 @@ bool search(Node* root, int key)
 
 void delete_by_key(Node* root, int key)
 {
+    if (root->data==key)
+    {
+        /* code */
+    }
     
 }
