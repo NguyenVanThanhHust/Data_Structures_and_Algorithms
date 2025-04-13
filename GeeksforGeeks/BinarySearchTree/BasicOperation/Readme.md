@@ -1,0 +1,1 @@
+Sample data is pre-order traversal data: Root -> Left -> Right

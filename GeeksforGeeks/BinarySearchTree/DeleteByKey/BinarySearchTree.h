@@ -24,3 +24,4 @@ int get_max_height(Node* root);
 void inorder_traversal(Node* root);
 void level_order_traversal(Node* root);
 bool search(Node* root, int key);
+Node* delete_by_key(Node* root, int key);

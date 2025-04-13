@@ -22,6 +22,11 @@ Node* insert(Node* node, int data)
 
 int get_max_height(Node* root)
 {
+    if (root==nullptr)
+    {
+        return 0;
+    }
+    
     if (root->left == nullptr && root->right == nullptr)
     {
         return 1;
@@ -135,4 +140,45 @@ int find_inorder_successor(Node* root)
         return find_inorder_successor(root->left);
     }
     return find_inorder_successor(root->right);
+}
+
+Node* delete_by_key(Node* root, int key)
+{
+    if (root==nullptr)
+    {
+        return root;
+    }
+    if (key > root->data)
+    {
+        root->right = delete_by_key(root->right, key);
+    }
+    if (key < root->data)
+    {
+        root->left = delete_by_key(root->left, key);
+    }
+    // this is the node we need to delete
+    // if it is a leaf node, just delete it
+    if (root->left == nullptr && root->right == nullptr)
+    {
+        delete root;
+        return nullptr;
+    }
+    // if it has only one child, make the child as new node
+    if (root->left == nullptr)
+    {
+        Node *tmp = root->right;
+        delete root;
+        return tmp;
+    }
+    if (root->right == nullptr)
+    {
+        Node *tmp = root->left;
+        delete root;
+        return tmp;
+    }
+    // if is has two children, find the inorder node
+    int inorder_successor_value = find_inorder_successor(root);
+    root->data = inorder_successor_value;
+    root = delete_by_key(root, inorder_successor_value);
+    return root;
 }

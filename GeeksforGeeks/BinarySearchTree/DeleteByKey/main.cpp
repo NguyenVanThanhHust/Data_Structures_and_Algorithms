@@ -60,8 +60,11 @@ int main()
             }
             
             cout<<endl<<"inorder traversal"<<endl;
-            // // Print inorder traversal of the BST
             inorder_traversal(root);
+            int key_to_delete;
+            cin>>key_to_delete;
+            Node* new_root = delete_by_key(root, key_to_delete);
+            inorder_traversal(new_root);
             std::cout<<std::endl;
             num_test_case--;
             cout<<num_test_case<<endl;
